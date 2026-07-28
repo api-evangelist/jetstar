@@ -1,0 +1,496 @@
+aid: jetstar
+name: Jetstar
+review:
+  question: Does Jetstar publish a public developer portal or machine-readable API
+    contract, and what would it cost a distribution customer to leave?
+  answer: false
+  date: '2026-07-28'
+  reviewer: API Evangelist
+  openapiHarvested: false
+  specsCount: 0
+  scopeNote: |
+    Two surfaces were separated and must not be conflated. The CONSUMER surface
+    (jetstar.com, the Jetstar app, Club Jetstar, flight status, check-in) publishes
+    no API and no developer documentation of any kind. The DISTRIBUTION surface —
+    how agencies and OTAs actually book Jetstar seats — is where the API lives, and
+    Jetstar calls it, literally, "the Jetstar API". It is the Navitaire New Skies
+    SOAP/WCF web service, gated behind IATA accreditation plus separate Jetstar
+    approval. No OpenAPI, WSDL, JSON Schema or other machine-readable contract is
+    published on any public URL, so openapi/ is intentionally absent.
+
+findings:
+  summary: |
+    Jetstar operates a real, long-running, versioned partner API programme with a
+    portal, a registration flow, a download centre, a documented FAQ, published
+    environment base URLs, named operations and a 838-post release/outage feed going
+    back to 2009 — and none of it is a public developer product. The portal at
+    apiblog.jetstar.com is titled "Jetstar API" with the tagline "Your Guide on
+    Jetstar New Skies API", and every HTML page redirects to /login/. The interface
+    itself is not Jetstar's: it is Navitaire New Skies (Accenture), and the
+    production base URL sits on the vendor's own domain, jqapi.navitaire.com. Jetstar
+    has been a New Skies customer since 2009, when it became Navitaire's first
+    customer to launch New Skies 3.0; the partner feed tracks NSK 3.3 through NSK 4.6
+    across TEST1, TEST2, TRAIN and PROD environments.
+
+    There is no IATA NDC anywhere in this estate. A full-text search of the 838
+    partner posts for "New Distribution Capability", "AirShopping" and "OrderCreate"
+    returned zero results. The blog does carry a category literally named "NDC" with
+    234 posts, but its contents are route launches, seat maps, bundle changes and NSK
+    upgrade notices — it is not IATA NDC content and must not be read as such. Parent
+    Qantas runs the NDC@Scale-certified Qantas Distribution Platform; nothing found
+    extends it to Jetstar. Instead, Jetstar international sectors are ticketed on
+    Qantas QF/081 ticket stock through the GDS.
+
+    The low-cost-carrier-bypasses-the-GDS narrative is only half true for present-day
+    Jetstar. Jetstar's own trade FAQ names seven GDSs it is bookable in, while also
+    stating that some Jetstar sale and bundle fares are not available in the GDS at
+    all. The direct API is where full content lives; the GDS is a partial, surcharge-
+    exposed overlay.
+
+  surfaces:
+    - surface: consumer
+      documented: false
+      note: No public API, no developer documentation, no /developers or /api path.
+        www.jetstar.com is Akamai-fronted and refused every non-browser client from
+        this environment.
+    - surface: distribution
+      documented: true
+      gated: true
+      name: Jetstar API (Navitaire New Skies)
+      protocol: SOAP / WCF over HTTPS
+      note: Documented at apiblog.jetstar.com behind a partner login. Base URLs
+        published on the publicly readable FAQ page.
+
+  environmentsPublishedByJetstar:
+    - environment: Production
+      version: NSK 4.6
+      url: https://jqapi.navitaire.com
+      probe: connection timed out after 20s (curl exit 28); DNS resolves via Azure
+        Traffic Manager jqrzpgz-tm-soapapir4y.trafficmanager.net to 4.195.96.224.
+        Consistent with the portal's own client-certificate installation manual and
+        its "update IP address" connection-issue guidance.
+    - environment: Test
+      version: NSK 4.6
+      url: https://soapapir4y.test.jq.navitaire.com
+      probe: connection failed (HTTP 000); DNS resolves to 4.237.185.252.
+    - environment: Test (legacy, cited in partner docs)
+      url: https://jqtestr4xapi.navitaire.com/UtilitiesManager.svc
+      probe: not probed; cited verbatim in the Jetstar "Where we fly" partner post.
+
+  operationsNamedInJetstarDocumentation:
+    - GetAvailability
+    - GetTripAvailabilityWithSSR
+    - PriceItinerary
+    - GetItineraryPrice
+    - GetSSRAvailability
+    - GetStationList
+    - AddPaymentToBooking
+    - BookingCommit
+    - GetBooking
+    - UpdatePassengers
+  operationsNote: |
+    Harvested from the publicly readable text of Jetstar's own partner FAQ and the
+    "Where we fly" partner post. No request/response schema is published, so no
+    OpenAPI was derived and none was invented.
+
+switchingCost:
+
+  interfaceShape:
+    value: proprietary-documented
+    standardNamed: none
+    standardConformance: no standard reference found
+    evidence: |
+      The contract is Navitaire New Skies (NSK), an Accenture-owned airline passenger
+      service system. It is SOAP/WCF — the partner docs reference .svc endpoints
+      (UtilitiesManager.svc), a session Signature passed on every request, C# request
+      objects (GetStationListRequest / GetStationListRequestData), and a 20-minute
+      session timeout. The portal masthead reads "Jetstar API — Your Guide on Jetstar
+      New Skies API". Jetstar's partner feed carries posts titled "SOAP API Cloud
+      Migration", "Navitaire Cloud Migration", "DotRez API Upgrade in Production" and
+      "New Skies API is down".
+      No open standard is implemented or referenced anywhere: no IATA NDC, no
+      OpenTravel/OTA, no HTNG, no OpenAPI, no published WSDL. This is a vendor shape,
+      not an industry shape. A partner who integrates writes code against Navitaire's
+      object model, not against a specification that a competitor also implements.
+    counterpoint: |
+      The vendor shape is at least a shared vendor shape — Navitaire New Skies is used
+      by many low-cost carriers, so an integrator who already speaks New Skies has less
+      work to do. That reduces integrator effort; it does not reduce Jetstar's hold on
+      Jetstar inventory.
+
+  secondSource:
+    value: no-alternative
+    alternativesConsidered:
+      - name: GDS (Amadeus, Travelport-Galileo, Sabre, Worldspan, Apollo, Abacus,
+          Travelsky)
+        verdict: A different pipe to the same inventory, not a second source. Jetstar's
+          own trade FAQ states "No. Some Jetstar sale & bundle fares are not available
+          in the GDS." Duffel's public page adds "If surcharges are applicable through
+          GDS you will bypass those costs by connecting directly."
+      - name: Aggregators and resellers (e.g. Duffel, which advertises "Sell flights
+          directly through Jetstar's API")
+        verdict: Resells the same Jetstar API. Changes who you contract with, not where
+          the seats come from.
+      - name: Qantas QF/081 ticket stock for Jetstar international sectors
+        verdict: Still the Qantas Group. Not an independent source.
+      - name: Virgin Australia, Rex, and other AU carriers
+        verdict: Substitutable transport on some routes, not substitutable Jetstar
+          inventory. Nothing else sells a JQ seat.
+    evidence: |
+      For a partner whose product is "book Jetstar", there is no second source. This is
+      the honest finding and it is the structural fact of airline distribution: the
+      carrier is a monopolist in its own inventory, and every intermediary is a
+      re-router of the same supply.
+
+  exitPath:
+    value: export-on-request
+    bulkExportOperation: none published
+    evidence: |
+      No export, dump, bulk or data-portability operation appears anywhere in Jetstar's
+      published partner documentation. Data retrieval is per-booking: GetBooking to
+      read a PNR, plus a documented "How To Retrieve Booking History" procedure. There
+      is no operation that returns a partner's whole book of business.
+      For individuals rather than partners, Jetstar's privacy policy states it will
+      provide access to the information it holds "to the extent required by applicable
+      law", which in Australia is Australian Privacy Principle 12 — a written request
+      to Jetstar, not a self-serve export and not an endpoint.
+      A leaving partner therefore reconstructs its booking history from its own logs
+      and from per-PNR calls it must make before its credentials are revoked.
+
+  identifierPortability:
+    portable:
+      - IATA airline designators JQ (Jetstar Airways) and GK (Jetstar Japan); 3K
+        (Jetstar Asia) retired 31 July 2025
+      - IATA numeric airline code 081 (Qantas ticket stock used for Jetstar
+        international sectors)
+      - PNR record locators — the partner FAQ's production-test process is written
+        entirely in terms of PNRs
+      - IATA three-letter station/airport codes (StationCode, GetStationList)
+      - IATA agency number — captured as "Agency #" on the booking contact
+      - IATA SSR codes for ancillaries, and IATA Regulation 830d passenger contact
+        fields
+      - Travel document types P (Passport) and RED (Redress Number)
+    notPortable:
+      - Navitaire session Signature values
+      - Jetstar product classes, bundle names and fare basis codes (Starter, Starter
+        Plus, Starter Max, Flex, Business), which are carrier-specific and were
+        renamed mid-programme (Flexibiz to Flex, 10 Dec 2018)
+      - OAFF travel document type, which is a Qantas Frequent Flyer number — a
+        group-proprietary loyalty identifier carried in a standard field
+      - Navitaire-internal booking and journey identifiers, and the "Sum of Sectors"
+        pricing construct
+    summary: Industry identifiers on the outside (IATA codes, PNRs, agency numbers),
+      vendor identifiers on the inside (Navitaire signatures, carrier fare-basis and
+      bundle codes).
+
+  contractualLockIn:
+    published: partial
+    verbatim:
+      - quote: "Authorised Booking Facilities for Registered Agents are: API, GDS,
+          Jetstar Agent Hub"
+        source: Jetstar Sales Team trade communication, "Updates to Jetstar's Travel
+          Agent Terms and Conditions and Conditions of Carriage"
+        url: https://jet-p-001-delivery.sitecorecontenthub.cloud/api/public/content/3aff6709086c4fd8b8e3bb616a244300?v=81001889
+        httpStatus: 200
+      - quote: For all online distribution, Registered Agents may only access Jetstar
+          Data and make bookings via the API (subject to clause 26.1).
+        source: Jetstar Travel Agent Terms and Conditions, as surfaced in search of
+          jetstar.com
+        url: https://www.jetstar.com/us/en/travel-agents/terms-and-conditions
+        httpStatus: probe blocked (see probes)
+      - quote: making bookings for commercial purposes on Jetstar.com breaches the
+          Jetstar.com Website Terms of Use as well as Jetstar's Travel Agent Terms and
+          Conditions
+        source: same trade communication
+        url: https://jet-p-001-delivery.sitecorecontenthub.cloud/api/public/content/3aff6709086c4fd8b8e3bb616a244300?v=81001889
+        httpStatus: 200
+      - quote: "No. Some Jetstar sale & bundle fares are not available in the GDS."
+        source: Qantas Group Travel Agent FAQs (QF-081)
+        url: https://www.jetstar.com/_/media/files/qantas-group/qantas-group-081-faqs.pdf
+        httpStatus: 200
+      - quote: If approved, Jetstar will enable the agency to make BSP Cash payments
+          through Jetstar's Agent Hub, Call Centre, and API (API access requires
+          separate Jetstar approval).
+        source: Jetstar BSP Settlement page for travel agents
+        url: https://www.jetstar.com/us/en/travel-agents/information-centre/bsp-settlement
+        httpStatus: probe blocked (see probes)
+    notPublished:
+      - minimum term
+      - exclusivity clause text
+      - full-content agreement text
+      - per-segment or per-transaction fee schedule
+      - termination notice period
+      - data revocation terms on account closure
+    note: |
+      Clause 26.1 is referenced but its text is not in any public document reached.
+      The full Travel Agent Terms and Conditions are behind www.jetstar.com, which
+      refused every automated client from this environment. Commercial terms beyond
+      what is quoted above are NOT inferred.
+      The binding effect that IS verifiable is a channel restriction rather than a
+      term commitment: a Registered Agent may transact only through Jetstar's three
+      authorised facilities, and public-website booking for commercial purposes is
+      an express breach. Exit is therefore cheap contractually and expensive
+      technically — the opposite shape to a GDS full-content agreement.
+
+  accessGate:
+    value: accredited-or-licensed
+    whatADeveloperMustDo:
+      - Become a Jetstar Registered Travel Agent and accept the Jetstar Travel Agent
+        Terms and Conditions
+      - Hold IATA GoStandard or GoGlobal accreditation to settle via BSP — Jetstar
+        stopped supporting BSP settlement with GoLite accredited agents from 4
+        December 2023
+      - Obtain separate Jetstar approval specifically for API access ("API access
+        requires separate Jetstar approval")
+      - Register on the partner portal at apiblog.jetstar.com/api-registration/ and
+        obtain a portal login for documentation and the Download Centre
+      - Install a client SSL certificate per Jetstar's certificate installation manual
+        and have the calling IP addresses allow-listed
+      - Pass user acceptance testing, including a capped production-test regime — a
+        maximum of 5 test bookings, passenger names containing "TEST", travel dates at
+        least 6 months out, refunds requested within 72 hours by emailing
+        sales@jetstar.com
+    selfServe: false
+    publicSignup: false
+    portalConfirmed: false
+    portalNote: apiblog.jetstar.com returns HTTP 200 but every HTML request redirects
+      to /login/. It is a partner login, not a self-serve developer portal.
+
+  distributionModel:
+    value: gds-intermediated
+    enumCaveat: |
+      The enum forces a single token and Jetstar is genuinely hybrid. gds-intermediated
+      is chosen because it is verifiably true — Jetstar's own trade FAQ names seven
+      GDSs — whereas direct-only would assert something this research disproves.
+      In practice the direct Navitaire API and the Jetstar Agent Hub carry full content
+      and the GDS carries a deliberately incomplete subset.
+    authorisedBookingFacilities:
+      - Jetstar API (Navitaire New Skies direct connect)
+      - GDS
+      - Jetstar Agent Hub
+    gdsList:
+      - Amadeus
+      - Travelport - Galileo
+      - Sabre
+      - Worldspan
+      - Apollo
+      - Abacus
+      - Travelsky (JQ and 3K flights only)
+    gdsContentGap: Some Jetstar sale and bundle fares are not available in the GDS.
+      Jetstar's Plus bundle was replaced by the Flex bundle for GDS purchase on most
+      routes, and the GDS tariff was changed to add a C-class seat-only option.
+    ticketing: Jetstar international sectors are ticketed on Qantas QF/081 ticket
+      stock; no BSP commission is earned on Jetstar-only itineraries and commission
+      must be manually adjusted to 0%.
+
+  ndcPosture:
+    ndcApiPublished: false
+    certificationClaimFound: false
+    certificationLevel: none found
+    gdsSurchargeOnJetstarBookings: not published by Jetstar; Duffel states generally
+      that connecting directly bypasses GDS surcharges where applicable
+    evidence: |
+      Full-text search of all 838 posts on Jetstar's partner blog for "New Distribution
+      Capability", "AirShopping" and "OrderCreate" returned zero results. No NDC
+      endpoint, no NDC schema version, no IATA NDC certification claim, and no mention
+      of the Qantas Distribution Platform were found on any Jetstar surface reached.
+      IMPORTANT ANTI-PATTERN: the partner blog has a category named exactly "NDC" with
+      234 posts. Its contents are route launches, seat maps, bundle changes and New
+      Skies upgrade notices. It is a local label, not IATA NDC, and an automated
+      classifier keying on the string "NDC" would get this badly wrong.
+      Parent Qantas separately runs the Qantas Distribution Platform, publicly
+      described as certified NDC@Scale by IATA. Nothing found extends it to Jetstar.
+    summary: No IATA NDC. Navitaire New Skies SOAP direct connect plus a partial GDS
+      overlay; parent Qantas is NDC@Scale certified but Jetstar is not covered by
+      anything located.
+
+probes:
+  fetchedOn: '2026-07-28'
+  method: curl (HTTP/2 and HTTP/1.1, browser User-Agent) plus WebFetch; dig for DNS
+  note: |
+    www.jetstar.com and newsroom.jetstar.com are Akamai-fronted and refused every
+    automated client from this environment (connection reset / HTTP/2 INTERNAL_ERROR /
+    timeout, recorded as HTTP 000). PDFs served from the same host under /_/media/
+    DID return 200, and files.jetstar.com and the Sitecore Content Hub delivery domain
+    also returned 200, so page-level content was recovered through those paths and
+    through search results rather than through direct HTML fetches. HTTP 000 below
+    means "no response obtained from this environment", not "does not exist".
+  results:
+    - url: https://www.jetstar.com/au/en/home
+      status: 000
+      note: blocked / no response
+    - url: https://www.jetstar.com/us/en/travel-agents/information-centre/jetstar-api
+      status: 000
+      note: blocked; page confirmed to exist via search results
+    - url: https://www.jetstar.com/us/en/travel-agents/information-centre
+      status: 000
+      note: blocked
+    - url: https://developer.jetstar.com
+      status: 000
+      note: NXDOMAIN — no DNS record
+    - url: https://developers.jetstar.com
+      status: 000
+      note: NXDOMAIN — no DNS record
+    - url: https://docs.jetstar.com
+      status: 000
+      note: NXDOMAIN — no DNS record
+    - url: https://api.jetstar.com
+      status: 000
+      note: CNAME to api-gateway-elb-711290183.ap-southeast-2.elb.amazonaws.com which
+        does not resolve to an address — dangling record, no service
+    - url: https://www.jetstar.com/developers
+      status: 000
+      note: blocked
+    - url: https://www.jetstar.com/api
+      status: 000
+      note: blocked
+    - url: https://www.jetstar.com/openapi.json
+      status: 000
+      note: blocked
+    - url: https://www.jetstar.com/swagger.json
+      status: 000
+      note: blocked
+    - url: https://www.jetstar.com/api-docs
+      status: 000
+      note: blocked
+    - url: https://www.jetstar.com/.well-known/security.txt
+      status: 000
+      note: blocked
+    - url: https://www.jetstar.com/robots.txt
+      status: 000
+      note: blocked
+    - url: https://apiblog.jetstar.com/
+      status: 200
+      note: redirects to /login/. Site title "Jetstar API", tagline "Your Guide on
+        Jetstar New Skies API". THE developer portal, gated.
+    - url: https://apiblog.jetstar.com/login/
+      status: 200
+      note: partner login
+    - url: https://apiblog.jetstar.com/wp-json/
+      status: 200
+      contentType: application/json
+      note: WordPress REST API index, 580 routes, 23 namespaces. This is WordPress.com
+        platform infrastructure on a Jetstar-owned host, NOT a Jetstar product API,
+        and is deliberately not listed in apis.yml. It is how the portal's own
+        documentation text was read.
+    - url: https://apiblog.jetstar.com/wp-json/wp/v2/posts
+      status: 200
+      note: X-WP-Total 838 posts, 2009 to 2026-06-30. Categories - Outages 329,
+        Scheduled Maintenance 248, NDC 234, Route Updates 27.
+    - url: https://apiblog.jetstar.com/faq/
+      status: 200
+      note: read via wp-json page id 6. Publishes the NSK 4.6 production and test base
+        URLs, the operation names, the session/compression/certificate guidance and
+        the production-test refund process.
+    - url: https://apiblog.jetstar.com/api-documentation/
+      status: 200
+      note: page exists; body renders from a gated shortcode, empty over the REST API
+    - url: https://apiblog.jetstar.com/api-products/
+      status: 200
+      note: page exists; body renders from a gated shortcode, empty over the REST API
+    - url: https://apiblog.jetstar.com/api-registration/
+      status: 200
+      note: page exists; registration form is a gated shortcode
+    - url: https://apiblog.jetstar.com/downloads/
+      status: 200
+      note: "Download Centre; body is the shortcode [document_center] — contents gated"
+    - url: https://jqapi.navitaire.com/
+      status: 000
+      note: connection timed out after 20s. Production Jetstar API base URL as
+        published by Jetstar. DNS resolves through Azure Traffic Manager.
+    - url: https://jqapi.navitaire.com/BookingManager.svc?wsdl
+      status: 000
+      note: no response; no WSDL obtainable without a client certificate and
+        allow-listed IP
+    - url: https://soapapir4y.test.jq.navitaire.com/
+      status: 000
+      note: no response. Test environment base URL as published by Jetstar.
+    - url: https://jetstarapi.wordpress.com/
+      status: 403
+      note: the legacy documentation blog that the current FAQ still links to for ~100
+        articles. Now private. Every deep link in Jetstar's own FAQ is dead to the
+        public — a documentation-rot finding in its own right.
+    - url: https://github.com/JetstarAirways
+      status: 200
+      note: organisation exists and states "This organization has no public
+        repositories". No SDKs, no specs, no sample code.
+    - url: https://jet-p-001-delivery.sitecorecontenthub.cloud/api/public/content/3aff6709086c4fd8b8e3bb616a244300?v=81001889
+      status: 200
+      contentType: application/pdf
+      note: Jetstar trade communication naming the three authorised booking facilities
+    - url: https://www.jetstar.com/_/media/files/qantas-group/qantas-group-081-faqs.pdf
+      status: 200
+      contentType: application/pdf
+      note: Qantas Group Travel Agent FAQs (QF-081) — GDS list, content gaps, ticketing
+    - url: https://files.jetstar.com/api/public/content/2009-jetstar-new-reservation-system-live
+      status: 200
+      contentType: application/pdf
+      note: 11 Feb 2009 release confirming the Open Skies to New Skies cutover and that
+        Jetstar was Navitaire's first New Skies 3.0 customer
+    - url: https://duffel.com/flights/airlines/jetstar
+      status: 200
+      note: third-party reseller; "Sell flights directly through Jetstar's API"
+    - url: https://www.linkedin.com/company/jetstar-airways
+      status: 200
+      note: official company page
+    - url: https://newsroom.jetstar.com/
+      status: 000
+      note: blocked from this environment; content reachable via files.jetstar.com
+
+sources:
+  - url: https://apiblog.jetstar.com/faq/
+    type: Documentation
+    note: Primary technical source. Base URLs, NSK version, operation names, auth and
+      session model, production-test rules, trade contacts.
+  - url: https://apiblog.jetstar.com/
+    type: Portal
+    note: Titled "Jetstar API"; tagline "Your Guide on Jetstar New Skies API"; gated.
+  - url: https://jet-p-001-delivery.sitecorecontenthub.cloud/api/public/content/3aff6709086c4fd8b8e3bb616a244300?v=81001889
+    type: TermsOfService
+    note: Authorised Booking Facilities; Jetstar.com commercial booking is a breach.
+  - url: https://www.jetstar.com/_/media/files/qantas-group/qantas-group-081-faqs.pdf
+    type: FAQ
+    note: Seven GDSs named; GDS content gaps; QF/081 ticket stock; commission rules.
+  - url: https://www.jetstar.com/us/en/travel-agents/information-centre/bsp-settlement
+    type: Documentation
+    note: IATA GoStandard/GoGlobal accreditation requirement; separate Jetstar approval
+      for API access. Reached via search; direct fetch blocked.
+  - url: https://www.jetstar.com/us/en/travel-agents/terms-and-conditions
+    type: TermsOfService
+    note: Clause 26.1 online-distribution restriction. Reached via search; direct fetch
+      blocked.
+  - url: https://files.jetstar.com/api/public/content/2009-jetstar-new-reservation-system-live
+    type: Blog
+    note: Navitaire New Skies 3.0 cutover, 7 February 2009.
+  - url: https://apiblog.jetstar.com/jetstar-asia-3k-service-discontinuation-update-for-api-partners/
+    type: Blog
+    note: Jetstar Asia (3K) last flight 31 July 2025; JQ and GK unaffected;
+      apisupport@jetstar.com is the partner technical contact.
+  - url: https://apiblog.jetstar.com/where-we-fly/
+    type: Documentation
+    note: UtilitiesManager.svc, GetStationList, StationCode, C# request objects.
+  - url: https://duffel.com/flights/airlines/jetstar
+    type: Documentation
+    note: Third-party reseller framing of Jetstar direct-connect vs GDS surcharges.
+  - url: https://www.qantas.com/agencyconnect/global/en/qantas-ndc/qantas-distribution-platform/what-is-the-qantas-distribution-platform.html
+    type: Documentation
+    note: Parent-group NDC@Scale platform. No Jetstar coverage found.
+  - url: https://github.com/JetstarAirways
+    type: GitHubOrganization
+    note: No public repositories.
+
+actions:
+  openapiDirectoryCreated: false
+  reason: |
+    No OpenAPI, WSDL, JSON Schema or other machine-readable contract is published on
+    any public Jetstar or Navitaire URL. The production and test endpoints refuse
+    connections without a client certificate and an allow-listed IP, so no WSDL could
+    be retrieved. Nothing was generated or inferred from operation names, and no
+    openapi/ directory was created.
+  apisYmlListsOneApi: true
+  apisYmlNote: |
+    The single apis[] entry is the Jetstar API. It is listed because Jetstar itself
+    names it, publishes its base URLs, publishes its operation names and runs a
+    registration flow for it — it is real and documented, merely gated. The
+    apiblog.jetstar.com WordPress REST API was deliberately NOT listed: it is CMS
+    infrastructure, not a Jetstar distribution product.

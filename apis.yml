@@ -1,0 +1,136 @@
+aid: jetstar
+name: Jetstar
+url: https://raw.githubusercontent.com/api-evangelist/jetstar/refs/heads/main/apis.yml
+humanURL: https://www.jetstar.com/
+kind: company
+description: Jetstar Airways Pty Limited (ABN 33 069 720 243) is the Melbourne-based
+  low-cost carrier of the Qantas Group and, with Virgin Australia, one half of the
+  Australian domestic duopoly. The Jetstar Group flies as Jetstar Airways (JQ) and
+  Jetstar Japan (GK); Jetstar Asia (3K) flew its last service on 31 July 2025. Jetstar
+  sits at the direct-distribution end of the Australian travel chain — it sells through
+  jetstar.com, through the Jetstar Agent Hub, through seven GDSs, and through a
+  partner channel it calls, literally, the Jetstar API. That API is not a public
+  developer product and it is not IATA NDC — it is the Navitaire New Skies SOAP web
+  service (NSK 4.6) hosted on the vendor's own domain at jqapi.navitaire.com, with
+  documentation, registration and downloads behind a login at apiblog.jetstar.com.
+  There is no public developer portal, no OpenAPI or WSDL published, no self-serve
+  signup and no bulk export operation. Access requires GoStandard or GoGlobal IATA
+  accreditation for BSP settlement plus separate Jetstar approval, Registered Agent
+  status under Jetstar's Travel Agent Terms and Conditions, a client certificate and
+  IP allow-listing. Jetstar's own trade communications name only three authorised
+  booking facilities for Registered Agents — API, GDS and Jetstar Agent Hub — and
+  state that Registered Agents may only access Jetstar Data and make bookings via the
+  API for all online distribution.
+accessModel:
+  pricing: enterprise
+  onboarding: approval
+  trial: false
+  try_now: false
+  public: false
+  label: Commercial agreement · IATA-accredited Registered Travel Agents only
+  confidence: high
+  source:
+  - documentation
+  - terms
+  generated: '2026-07-28'
+  method: manual
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Travel
+- Australia
+- Aviation
+- Airline
+- Low Cost Carrier
+- Distribution
+- Booking
+- GDS
+- Corporate Travel
+- Qantas Group
+created: '2026-07-28'
+modified: '2026-07-28'
+specificationVersion: '0.19'
+apis:
+- aid: jetstar:jetstar-api
+  name: Jetstar API
+  description: The Jetstar API is Jetstar's direct-connect distribution channel for
+    Registered Travel Agents and partners. It is a Navitaire New Skies (NSK) SOAP /
+    WCF web service, not a REST product and not IATA NDC. Jetstar's own partner FAQ
+    publishes the environments as NSK 4.6 with production at https://jqapi.navitaire.com
+    and test at https://soapapir4y.test.jq.navitaire.com, and documents WCF services
+    such as UtilitiesManager.svc alongside session-signature authentication.
+    Operations named in Jetstar's published partner documentation include
+    GetAvailability, GetTripAvailabilityWithSSR, PriceItinerary, GetItineraryPrice,
+    GetSSRAvailability, GetStationList, AddPaymentToBooking, BookingCommit,
+    GetBooking and UpdatePassengers. Documentation, registration, an API Products
+    page and a Download Centre live at apiblog.jetstar.com behind a partner login;
+    no OpenAPI, WSDL or machine-readable contract is published publicly. Access
+    requires IATA accreditation plus separate Jetstar approval, and the service
+    endpoints refuse connections from non-allow-listed clients.
+  humanURL: https://apiblog.jetstar.com/
+  baseURL: https://jqapi.navitaire.com
+  tags:
+  - Airline
+  - Distribution
+  - Booking
+  - SOAP
+  - Navitaire
+  - New Skies
+  - Travel Agents
+  - Ancillaries
+  properties:
+  - type: Portal
+    url: https://apiblog.jetstar.com/
+  - type: Documentation
+    url: https://apiblog.jetstar.com/api-documentation/
+  - type: FAQ
+    url: https://apiblog.jetstar.com/faq/
+  - type: Signup
+    url: https://apiblog.jetstar.com/api-registration/
+  - type: Documentation
+    url: https://apiblog.jetstar.com/api-products/
+  - type: Downloads
+    url: https://apiblog.jetstar.com/downloads/
+  - type: Blog
+    url: https://apiblog.jetstar.com/blog/
+  - type: Authentication
+    url: https://apiblog.jetstar.com/login/
+  - type: Support
+    url: mailto:apisupport@jetstar.com
+  - type: TermsOfService
+    url: https://www.jetstar.com/us/en/travel-agents/terms-and-conditions
+common:
+- type: Website
+  url: https://www.jetstar.com/
+- type: Portal
+  url: https://apiblog.jetstar.com/
+- type: Documentation
+  url: https://www.jetstar.com/us/en/travel-agents/information-centre/jetstar-api
+- type: GettingStarted
+  url: https://www.jetstar.com/us/en/travel-agents/why-become-a-registered-travel-agent-with-jetstar
+- type: Signup
+  url: https://www.jetstar.com/us/en/travel-agents
+- type: TermsOfService
+  url: https://www.jetstar.com/us/en/travel-agents/terms-and-conditions
+- type: Privacy
+  url: https://www.jetstar.com/au/en/privacy-policy
+- type: Support
+  url: mailto:apisupport@jetstar.com
+- type: Support
+  url: mailto:sales@jetstar.com
+- type: Documentation
+  url: https://www.jetstar.com/us/en/travel-agents/information-centre/bsp-settlement
+- type: Documentation
+  url: https://www.jetstar.com/us/en/travel-agents/bsp-payment-changes
+- type: Documentation
+  url: https://www.jetstar.com/au/en/travel-agents/remuneration
+- type: FAQ
+  url: https://www.jetstar.com/_/media/files/qantas-group/qantas-group-081-faqs.pdf
+- type: GitHubOrganization
+  url: https://github.com/JetstarAirways
+- type: LinkedIn
+  url: https://www.linkedin.com/company/jetstar-airways
+- type: Blog
+  url: https://newsroom.jetstar.com/
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
