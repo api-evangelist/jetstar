@@ -1,0 +1,137 @@
+generated: '2026-07-28'
+method: searched
+source: >-
+  https://apiblog.jetstar.com/faq/ and https://apiblog.jetstar.com/where-we-fly/,
+  read through the portal's publicly readable WordPress REST API. Only
+  conventions Jetstar itself publishes are recorded; nothing was inferred from
+  generic Navitaire New Skies behaviour.
+docs: https://apiblog.jetstar.com/faq/
+description: >-
+  Cross-cutting request/response semantics of the Jetstar API. This is not a
+  REST API: it is Navitaire New Skies (NSK 4.6) SOAP 1.x over WCF, addressed as
+  .svc service endpoints, with a session Signature carried on every message.
+  Most of the conventions the DX tier normally captures (idempotency keys,
+  cursor pagination, sparse fieldsets, request-id tracing, an HTTP error
+  envelope) are NOT published by Jetstar and are recorded here as unpublished
+  rather than guessed.
+
+api_style: SOAP 1.x / WCF over HTTPS, XML request and response bodies
+base_urls:
+  production: https://jqapi.navitaire.com
+  test: https://soapapir4y.test.jq.navitaire.com
+  legacy_test_cited_in_docs: https://jqtestr4xapi.navitaire.com/UtilitiesManager.svc
+service_endpoints_named_by_jetstar:
+  - UtilitiesManager.svc
+addressing:
+  style: WCF service endpoint plus SOAP operation name
+  note: >-
+    Operations are SOAP actions on a .svc endpoint, not HTTP verbs on resource
+    paths. Request payloads are typed objects (Jetstar's own documentation shows
+    the C# shapes GetStationListRequest / GetStationListRequestData).
+
+authentication:
+  scheme: >-
+    Navitaire session Signature on every request, over mutual TLS with a
+    Jetstar-issued client certificate, from an allow-listed source IP.
+  detail: authentication/jetstar-authentication.yml
+  docs: https://apiblog.jetstar.com/faq/
+
+session:
+  supported: true
+  mechanism: Session Signature returned by logon and passed on every subsequent request.
+  timeout_minutes: 20
+  note: >-
+    A 20-minute inactivity timeout is documented. Long-running agent workflows
+    must re-logon; there is no refresh-token concept.
+
+idempotency:
+  supported: unpublished
+  mechanism: null
+  note: >-
+    Jetstar publishes no idempotency key, no retry-safety guarantee and no
+    replay semantics for BookingCommit or AddPaymentToBooking. No Idempotency
+    pointer is emitted for this provider — the contract genuinely does not exist.
+
+pagination:
+  style: unpublished
+  note: >-
+    No pagination convention is published. Reference-data operations such as
+    GetStationList return full sets; there is no documented cursor, offset or
+    page parameter and no bulk/export operation of any kind.
+
+field_expansion:
+  supported: unpublished
+  note: >-
+    Availability calls carry request-level toggles in Jetstar's own operation
+    naming (GetTripAvailabilityWithSSR vs GetAvailability, GetSSRAvailability),
+    which is the New Skies way of widening a response. No generic expand/fields
+    parameter is published.
+
+metadata:
+  supported: unpublished
+
+request_tracing:
+  request_id_header: null
+  note: >-
+    No correlation/request-id header is published. Incident correlation is done
+    out of band against the partner outage feed and apisupport@jetstar.com.
+
+compression:
+  supported: true
+  note: >-
+    Jetstar's partner FAQ gives explicit guidance on enabling message
+    compression for the SOAP service.
+
+versioning:
+  scheme: platform-release
+  mechanism: >-
+    Version is a property of the deployed Navitaire New Skies platform (NSK
+    x.y), not a per-request header or a URI path segment. Partners are moved
+    between versions on Jetstar's schedule and told through the partner feed.
+  current: NSK 4.6
+  history_observed: NSK 3.3 through NSK 4.6 (Jetstar has been a New Skies customer since 2009)
+  detail: lifecycle/jetstar-lifecycle.yml
+  changelog: changelog/jetstar-changelog.yml
+
+error_envelope:
+  media_type: text/xml
+  rfc9457: false
+  shape: SOAP Fault
+  note: >-
+    No public error-code reference, fault-code registry or remediation table is
+    published on any reachable Jetstar or Navitaire URL, so errors/ is
+    intentionally absent rather than invented.
+
+rate_limits:
+  published: false
+  note: >-
+    No published request quota, burst limit or 429-equivalent signal. Volume is
+    governed by the commercial agreement and by the capped production-test
+    regime in sandbox/jetstar-sandbox.yml.
+
+webhooks:
+  published: false
+  note: >-
+    No webhook, callback, streaming or event surface is published. asyncapi/ is
+    intentionally absent; a provider with no event surface is not penalised.
+
+identifiers:
+  industry_standard:
+    - IATA airline designators JQ (Jetstar Airways), GK (Jetstar Japan)
+    - IATA numeric airline code 081 (Qantas ticket stock for Jetstar international sectors)
+    - IATA three-letter station codes (StationCode, GetStationList)
+    - PNR record locators
+    - IATA agency number ("Agency #" on the booking contact)
+    - IATA SSR codes; IATA Regulation 830d passenger contact fields
+    - Travel document types P (Passport), RED (Redress Number)
+  vendor_or_carrier_specific:
+    - Navitaire session Signature values
+    - Navitaire-internal booking and journey identifiers
+    - Jetstar fare bundles and fare basis codes (Starter, Starter Plus, Starter Max, Flex, Business)
+    - OAFF travel document type (Qantas Frequent Flyer number carried in a standard field)
+
+related:
+  authentication: authentication/jetstar-authentication.yml
+  lifecycle: lifecycle/jetstar-lifecycle.yml
+  sandbox: sandbox/jetstar-sandbox.yml
+  conformance: conformance/jetstar-conformance.yml

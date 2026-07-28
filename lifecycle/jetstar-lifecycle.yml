@@ -1,0 +1,100 @@
+generated: '2026-07-28'
+method: searched
+source: >-
+  https://apiblog.jetstar.com/faq/ and the portal's partner feed
+  (https://apiblog.jetstar.com/wp-json/wp/v2/posts, 838 posts, 2009 to
+  2026-06-30), read on 2026-07-28. No OpenAPI exists for this provider, so no
+  deprecated operations could be derived from a spec.
+description: >-
+  How the Jetstar API is versioned, changed, taken down and communicated.
+  Versioning is a property of the deployed Navitaire New Skies platform, not of
+  a request header or URI path — partners are moved between NSK releases on
+  Jetstar's schedule and told through the partner feed. That same feed is the
+  API's status channel: 329 Outages and 248 Scheduled Maintenance notices with
+  incident references (INC…/CHG…) and P1/P2/P3 severities. There is no
+  status.jetstar.com, no RFC 8594 Sunset/Deprecation headers, and no published
+  numeric SLA.
+
+versioning:
+  scheme: platform-release
+  mechanism: >-
+    Navitaire New Skies release version (NSK x.y.z) deployed per environment.
+    Not selectable per request; no version header, no URI version segment.
+  current: NSK 4.6
+  observed_history: NSK 3.3 → 3.4.6 → 3.4.8 → 4.1.1 → 4.5.1 → 4.6
+  environments_tracked: [TEST1, TEST2, TRAIN, PROD]
+  docs: https://apiblog.jetstar.com/faq/
+  notes: >-
+    Jetstar has been a Navitaire New Skies customer since the 7 February 2009
+    cutover from Open Skies, when it became Navitaire's first New Skies 3.0
+    customer. Test environments are upgraded (and occasionally downgraded) ahead
+    of production, and partners are given cutover windows in the feed.
+
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  mechanism: >-
+    Change and withdrawal are announced as dated posts in the partner feed, with
+    a change reference (CHG…) for planned work and an incident reference (INC…)
+    for unplanned. There is no written deprecation policy, no notice-period
+    commitment and no RFC 8594 header support.
+  observed_withdrawals:
+    - item: Jetstar Asia (3K) network
+      date: '2025-07-31'
+      note: >-
+        Last 3K service flown 31 July 2025; announced to API partners in a
+        dedicated post. JQ and GK unaffected.
+      source: https://apiblog.jetstar.com/jetstar-asia-3k-service-discontinuation-update-for-api-partners/
+    - item: Flexibiz bundle renamed to Flex
+      date: '2018-12-10'
+      note: Carrier-specific fare-family rename; changes values partners parse.
+    - item: Plus bundle replaced by Flex for GDS purchase on most routes
+      note: GDS tariff also changed to add a C-class seat-only option.
+    - item: BSP settlement with IATA GoLite-accredited agents
+      date: '2023-12-04'
+      note: No longer supported from 4 December 2023; GoStandard or GoGlobal required.
+    - item: Legacy documentation blog jetstarapi.wordpress.com
+      note: >-
+        Now private (HTTP 403) while Jetstar's current FAQ still links to roughly
+        100 articles on it — every one of those deep links is dead to the
+        public. Documentation rot, not a formal deprecation.
+
+status:
+  status_page: https://apiblog.jetstar.com/category/outages/
+  status_page_gated: true
+  maintenance_feed: https://apiblog.jetstar.com/category/scheduled-maintenance/
+  machine_readable_feed: https://apiblog.jetstar.com/wp-json/wp/v2/posts
+  incident_count_published: 329
+  maintenance_count_published: 248
+  severity_scheme: [P1, P2, P3]
+  reference_schemes: ['INC… (incident)', 'CHG… (change)']
+  notes: >-
+    Jetstar does not operate a Statuspage/Atlassian-style dashboard. The
+    Outages category on the partner portal is the published incident channel and
+    carries the same content — subject, reference, priority, status, business
+    impact, systems affected, start/end times. Rendered pages require the
+    partner login; the WordPress REST feed is readable anonymously.
+
+sla:
+  url: null
+  public_uptime_target: null
+  notes: >-
+    No public uptime target or service credit schedule. Availability
+    commitments, if any, sit inside the commercial distribution agreement, which
+    is not published.
+
+support:
+  api_technical: apisupport@jetstar.com
+  commercial: sales@jetstar.com
+
+deprecated_operations: []
+deprecated_operations_note: >-
+  Not derivable — Jetstar publishes no OpenAPI or WSDL, so there is no spec in
+  which to read deprecated:true flags. None were invented.
+
+related:
+  changelog: changelog/jetstar-changelog.yml
+  conventions: conventions/jetstar-conventions.yml
+  authentication: authentication/jetstar-authentication.yml

@@ -1,0 +1,115 @@
+generated: '2026-07-28'
+method: searched
+description: >-
+  Probe of the /.well-known/ discovery surface for every host in apis.yml
+  (Website, Portal, humanURL, baseURL). Jetstar publishes NO /.well-known/
+  documents of its own. Two probe artefacts matter and are recorded honestly:
+  (1) apiblog.jetstar.com answers HTTP 200 with the same 14,382-byte "Login -
+  Jetstar API" HTML shell for EVERY path, including /robots.txt, /llms.txt,
+  /openapi.json and every /.well-known/ path — a catch-all soft-200, not a real
+  document; (2) www.jetstar.com and jqapi.navitaire.com refused every automated
+  client from this environment (Akamai edge / client-certificate gate), so their
+  status is 0 = "no response obtained", not "confirmed absent". The only real
+  security.txt reachable for this estate is the parent Qantas Group document at
+  qantas.com, saved here verbatim.
+probe_date: '2026-07-28'
+
+hosts:
+  - host: https://apiblog.jetstar.com
+    note: >-
+      WordPress-hosted partner portal. Catch-all 200 login shell on every path;
+      no /.well-known/ document is actually served.
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        type: text/html
+        note: Login shell (14382 bytes), not a security.txt. Not saved.
+      - path: /.well-known/openid-configuration
+        status: 200
+        type: text/html
+        note: Login shell, not an OIDC discovery document. Not saved.
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        type: text/html
+        note: Login shell, not RFC 8414 metadata. Not saved.
+      - path: /.well-known/api-catalog
+        status: 200
+        type: text/html
+        note: Login shell, not an RFC 9727 API catalog. Not saved.
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        type: text/html
+        note: Login shell, not a plugin manifest. Not saved.
+      - path: /llms.txt
+        status: 200
+        type: text/html
+        note: Login shell. No llms.txt is published; llms/jetstar-llms.txt is generated.
+      - path: /robots.txt
+        status: 200
+        type: text/html
+        note: Login shell rather than a robots.txt — the catch-all proves the soft-200 behaviour.
+      - path: /openapi.json
+        status: 200
+        type: text/html
+        note: Login shell. No OpenAPI.
+      - path: /swagger.json
+        status: 200
+        type: text/html
+        note: Login shell. No Swagger.
+      - path: /api-docs
+        status: 200
+        type: text/html
+        note: Login shell.
+  - host: https://www.jetstar.com
+    note: Akamai-fronted; refused automated clients from this environment.
+    documents:
+      - path: /.well-known/security.txt
+        status: 0
+        note: read timed out — no response obtained; not confirmed absent.
+      - path: /robots.txt
+        status: 0
+        note: read timed out.
+  - host: https://jqapi.navitaire.com
+    note: Production Jetstar API base URL; mutual-TLS + IP allow-list gate.
+    documents:
+      - path: /.well-known/security.txt
+        status: 0
+        note: connection timed out; no anonymous access to this host.
+      - path: /openapi.json
+        status: 0
+        note: connection timed out.
+  - host: https://www.navitaire.com
+    note: Vendor marketing site, probed for completeness.
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        type: text/html
+        note: '"Page Not Found" HTML, not a security.txt. Not saved.'
+  - host: https://www.qantas.com
+    note: >-
+      Parent group. Jetstar Airways Pty Limited is a wholly owned Qantas Group
+      subsidiary and the document's own scope statement is "Qantas Group digital
+      assets". This is the only real RFC 9116 security.txt applicable to the
+      Jetstar estate.
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        type: text/plain
+        file: jetstar-qantas-group-security.txt
+        scope: parent-group
+        note: >-
+          Canonical https://www.qantas.com/.well-known/security.txt; also served
+          at https://qantas.com/.well-known/security.txt. Contact is the Qantas
+          Bugcrowd Vulnerability Disclosure Program.
+
+summary:
+  jetstar_hosted_well_known_documents: 0
+  parent_group_security_txt: true
+  oidc_discovery: false
+  oauth_authorization_server: false
+  api_catalog: false
+  ai_plugin: false
+
+related:
+  vulnerability_disclosure: security/jetstar-vulnerability-disclosure.yml
+  domain_security: security/jetstar-domain-security.yml

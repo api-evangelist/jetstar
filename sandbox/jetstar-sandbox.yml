@@ -1,0 +1,60 @@
+generated: '2026-07-28'
+method: searched
+source: https://apiblog.jetstar.com/faq/
+docs: https://apiblog.jetstar.com/faq/
+description: >-
+  Jetstar's test surface for API partners. There is no self-serve sandbox and no
+  public test credentials: the test environment is a separately provisioned
+  Navitaire New Skies instance reached with the same client certificate and
+  allow-listed IP as production. What Jetstar does publish, and what is captured
+  here verbatim, is the capped PRODUCTION-test regime every new partner must
+  pass — a rules-based rather than magic-value sandbox. No test card numbers,
+  test PNRs or magic identifiers are published by Jetstar, and none are invented
+  here.
+
+self_serve: false
+public_test_credentials: false
+
+environments:
+  - name: test
+    version: NSK 4.6
+    url: https://soapapir4y.test.jq.navitaire.com
+    access: Same client certificate + IP allow-list gate as production.
+    probe: {date: '2026-07-28', status: 0, note: connection failed from an unregistered client; DNS resolves to 4.237.185.252}
+  - name: test-legacy
+    url: https://jqtestr4xapi.navitaire.com/UtilitiesManager.svc
+    note: Cited verbatim in Jetstar's "Where we fly" partner post.
+  - name: production
+    version: NSK 4.6
+    url: https://jqapi.navitaire.com
+    probe: {date: '2026-07-28', status: 0, note: connection timed out after 20s; DNS resolves via Azure Traffic Manager to 4.195.96.224}
+  - name: training
+    note: >-
+      Jetstar's partner release feed tracks TEST1, TEST2, TRAIN and PROD
+      environments; base URLs for TEST1/TEST2/TRAIN are not published publicly.
+
+production_test_regime:
+  description: >-
+    User acceptance testing is performed against PRODUCTION under a capped,
+    documented set of rules, then unwound. This is Jetstar's stated substitute
+    for an open sandbox.
+  rules:
+    - Maximum of 5 test bookings.
+    - Passenger names must contain "TEST".
+    - Travel dates must be at least 6 months in the future.
+    - Refunds must be requested within 72 hours by emailing sales@jetstar.com.
+  refund_contact: sales@jetstar.com
+
+magic_values:
+  published: false
+  note: >-
+    No test card numbers, test bank accounts, magic PNRs, simulated decline
+    values or fixture/trigger tooling are published by Jetstar. Nothing is
+    fabricated here.
+
+time_simulation:
+  supported: unpublished
+
+related:
+  authentication: authentication/jetstar-authentication.yml
+  conventions: conventions/jetstar-conventions.yml

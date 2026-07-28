@@ -84,7 +84,7 @@ apis:
     url: https://apiblog.jetstar.com/api-documentation/
   - type: FAQ
     url: https://apiblog.jetstar.com/faq/
-  - type: Signup
+  - type: SignUp
     url: https://apiblog.jetstar.com/api-registration/
   - type: Documentation
     url: https://apiblog.jetstar.com/api-products/
@@ -101,17 +101,21 @@ apis:
 common:
 - type: Website
   url: https://www.jetstar.com/
+- type: DeveloperPortal
+  url: https://apiblog.jetstar.com/
 - type: Portal
   url: https://apiblog.jetstar.com/
 - type: Documentation
   url: https://www.jetstar.com/us/en/travel-agents/information-centre/jetstar-api
+- type: APIReference
+  url: https://apiblog.jetstar.com/api-documentation/
 - type: GettingStarted
   url: https://www.jetstar.com/us/en/travel-agents/why-become-a-registered-travel-agent-with-jetstar
-- type: Signup
+- type: SignUp
   url: https://www.jetstar.com/us/en/travel-agents
 - type: TermsOfService
   url: https://www.jetstar.com/us/en/travel-agents/terms-and-conditions
-- type: Privacy
+- type: PrivacyPolicy
   url: https://www.jetstar.com/au/en/privacy-policy
 - type: Support
   url: mailto:apisupport@jetstar.com
@@ -131,6 +135,48 @@ common:
   url: https://www.linkedin.com/company/jetstar-airways
 - type: Blog
   url: https://newsroom.jetstar.com/
+- type: Authentication
+  name: Jetstar API authentication profile
+  url: authentication/jetstar-authentication.yml
+- type: Conventions
+  name: Jetstar API conventions
+  url: conventions/jetstar-conventions.yml
+- type: Lifecycle
+  name: Jetstar API lifecycle and versioning
+  url: lifecycle/jetstar-lifecycle.yml
+- type: StatusPage
+  name: Jetstar API outages and incident notices
+  url: https://apiblog.jetstar.com/category/outages/
+- type: ChangeLog
+  name: Jetstar API partner change feed
+  url: changelog/jetstar-changelog.yml
+- type: Sandbox
+  name: Jetstar API test environment and production-test regime
+  url: sandbox/jetstar-sandbox.yml
+- type: Conformance
+  name: Jetstar API standards conformance
+  url: conformance/jetstar-conformance.yml
+- type: Packages
+  name: Jetstar client libraries (none published)
+  url: packages/jetstar-packages.yml
+- type: WellKnown
+  name: Jetstar .well-known discovery probe
+  url: well-known/jetstar-well-known.yml
+- type: SecurityTxt
+  name: Qantas Group security.txt (covers Jetstar)
+  url: well-known/jetstar-qantas-group-security.txt
+- type: DomainSecurity
+  name: Jetstar domain and transport security posture
+  url: security/jetstar-domain-security.yml
+- type: VulnerabilityDisclosure
+  name: Qantas Group vulnerability disclosure program
+  url: security/jetstar-vulnerability-disclosure.yml
+- type: Security
+  name: Qantas Group vulnerability disclosure policy
+  url: https://www.qantas.com/.well-known/security.txt
+- type: LLMsTxt
+  name: Jetstar llms.txt
+  url: llms/jetstar-llms.txt
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

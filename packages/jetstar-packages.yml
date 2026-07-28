@@ -1,0 +1,33 @@
+generated: '2026-07-28'
+method: searched
+source: >-
+  Registry searches run 2026-07-28 against npm, PyPI and the JetstarAirways
+  GitHub organisation, plus the SDK/Downloads links already in apis.yml.
+description: >-
+  Jetstar publishes NO client libraries. There is no first-party SDK in any
+  public registry, the JetstarAirways GitHub organisation has zero public
+  repositories, and the only artefacts Jetstar distributes are gated files in
+  the partner portal's Download Centre (a client-certificate installation manual
+  and partner documentation), not installable packages. Recorded as an empty
+  result rather than padded — no SDKs pointer is emitted for this provider.
+
+packages: []
+
+registries_searched:
+  - {registry: npm, query: jetstar, results: 0, date: '2026-07-28'}
+  - {registry: npm, query: navitaire, results: 1, official: false, note: 'newman-reporter-dotrez-json — a third-party Newman reporter naming the Navitaire dotREZ API; not published by Jetstar or Navitaire.'}
+  - {registry: pypi, query: jetstar, results: 0, note: 'https://pypi.org/simple/jetstar/ returned 404'}
+  - {registry: pypi, query: navitaire, results: 0, note: 'https://pypi.org/simple/navitaire/ returned 404'}
+  - {registry: github, query: 'org:JetstarAirways', results: 0, note: 'Organisation exists (id 941485) with zero public repositories.'}
+
+gated_downloads:
+  url: https://apiblog.jetstar.com/downloads/
+  status: gated
+  note: >-
+    The portal Download Centre renders from a [document_center] shortcode behind
+    the partner login. Its contents are documentation and a client-certificate
+    installation manual per Jetstar's own FAQ — not a distributable client
+    library. Nothing could be enumerated anonymously.
+
+official_sdk_count: 0
+third_party_only: true

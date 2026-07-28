@@ -1,0 +1,98 @@
+generated: '2026-07-28'
+method: searched
+source: >-
+  https://apiblog.jetstar.com/faq/ (read via the portal's publicly readable
+  WordPress REST API, page id 6) and https://apiblog.jetstar.com/where-we-fly/.
+  No OpenAPI or WSDL is published, so nothing was derived mechanically —
+  0-working/derive-authentication.py has no spec to read for this provider.
+docs: https://apiblog.jetstar.com/faq/
+description: >-
+  The Jetstar API is a Navitaire New Skies (NSK 4.6) SOAP/WCF web service, not a
+  REST product. Authentication is therefore not an OpenAPI securityScheme: it is
+  a three-layer gate — transport-level mutual TLS with a Jetstar-issued client
+  certificate, network-level source-IP allow-listing, and an application-level
+  Navitaire session Signature that is obtained by a logon call and then carried
+  on every subsequent request. Before any of that, a caller must be an
+  IATA-accredited Jetstar Registered Travel Agent with separate Jetstar approval
+  for API access.
+
+summary:
+  types:
+    - mutualTLS
+    - session-token
+    - ip-allowlist
+  api_key_in: []
+  oauth2_flows: []
+  oauth2: false
+  oidc: false
+  self_serve_credentials: false
+
+schemes:
+  - name: ClientCertificate
+    type: mutualTLS
+    layer: transport
+    description: >-
+      Jetstar issues a client SSL certificate to each approved partner and
+      publishes a certificate installation manual in the gated Download Centre.
+      Connections presenting no certificate are refused.
+    evidence: >-
+      Portal Download Centre lists a client-certificate installation manual;
+      https://jqapi.navitaire.com times out for non-certificated clients.
+    source: https://apiblog.jetstar.com/faq/
+  - name: SourceIPAllowList
+    type: network
+    layer: network
+    description: >-
+      Calling IP addresses must be registered with Jetstar and allow-listed.
+      Jetstar's connection-issue guidance is written around "update IP address".
+    evidence: Partner FAQ connection-troubleshooting guidance.
+    source: https://apiblog.jetstar.com/faq/
+  - name: NavitaireSessionSignature
+    type: session-token
+    layer: application
+    in: soap-message
+    parameter_name: Signature
+    description: >-
+      Navitaire New Skies issues a session Signature that is passed on every
+      subsequent SOAP request. Sessions expire after 20 minutes of inactivity
+      and must be re-established.
+    session_timeout_minutes: 20
+    evidence: >-
+      Partner FAQ documents the session Signature and the 20-minute session
+      timeout; C# request objects (GetStationListRequest /
+      GetStationListRequestData) carry the signature.
+    source: https://apiblog.jetstar.com/faq/
+
+not_supported:
+  - id: oauth2
+    note: No OAuth 2.0 authorization server, no token endpoint, no scopes. scopes/ is intentionally absent.
+  - id: openIdConnect
+    note: No /.well-known/openid-configuration on any Jetstar or Navitaire host.
+  - id: apiKey
+    note: No self-serve API key; credentials are issued per approved partner.
+
+onboarding:
+  self_serve: false
+  public_signup: false
+  registration_url: https://apiblog.jetstar.com/api-registration/
+  prerequisites:
+    - Jetstar Registered Travel Agent status under the Jetstar Travel Agent Terms and Conditions
+    - IATA GoStandard or GoGlobal accreditation for BSP settlement (GoLite unsupported since 4 December 2023)
+    - Separate Jetstar approval specifically for API access
+    - Portal login at apiblog.jetstar.com for documentation and the Download Centre
+    - Installed client SSL certificate and allow-listed calling IP addresses
+  support_contact: apisupport@jetstar.com
+
+environments:
+  - name: production
+    version: NSK 4.6
+    url: https://jqapi.navitaire.com
+  - name: test
+    version: NSK 4.6
+    url: https://soapapir4y.test.jq.navitaire.com
+
+related:
+  conventions: conventions/jetstar-conventions.yml
+  sandbox: sandbox/jetstar-sandbox.yml
+  lifecycle: lifecycle/jetstar-lifecycle.yml
+  conformance: conformance/jetstar-conformance.yml

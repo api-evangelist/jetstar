@@ -1,0 +1,161 @@
+generated: '2026-07-28'
+method: searched
+source: >-
+  https://apiblog.jetstar.com/ — read through the portal's publicly readable
+  WordPress REST API (/wp-json/wp/v2/posts, /wp-json/wp/v2/categories) on
+  2026-07-28. The HTML site redirects every request to /login/, so the feed
+  itself is the machine-readable form of Jetstar's partner changelog.
+docs: https://apiblog.jetstar.com/
+description: >-
+  Jetstar runs a genuine, long-running, dated release-and-incident feed for API
+  partners on its portal. It is a change feed rather than a versioned API
+  changelog: entries are platform notifications (Navitaire New Skies upgrades,
+  cloud migrations, scheduled maintenance, incidents) plus commercial changes
+  that alter API behaviour (bundle and fare-family renames, zoned seat pricing,
+  route launches/discontinuations). Recorded here is the recent window and the
+  structural facts; the live feed is the source of truth.
+gated: true
+gating_note: >-
+  Post bodies are readable anonymously over the WordPress REST API but the
+  rendered pages sit behind the partner login. Deep links below therefore 200
+  with the login shell for the public.
+
+feed:
+  index: https://apiblog.jetstar.com/wp-json/wp/v2/posts
+  total_posts: 838
+  earliest: '2009'
+  latest: '2026-06-30'
+  categories:
+    - {name: Outages, slug: outages, count: 329, url: 'https://apiblog.jetstar.com/category/outages/'}
+    - {name: Scheduled Maintenance, slug: scheduled-maintenance, count: 248, url: 'https://apiblog.jetstar.com/category/scheduled-maintenance/'}
+    - {name: NDC, slug: ndc, count: 234, url: 'https://apiblog.jetstar.com/category/ndc/'}
+    - {name: Route Updates, slug: route-updates, count: 27, url: 'https://apiblog.jetstar.com/category/route-updates/'}
+  category_caveat: >-
+    The category literally named "NDC" is NOT IATA New Distribution Capability.
+    Its 234 posts are route launches, seat maps, bundle changes and New Skies
+    upgrade notices. A full-text search of all 838 posts for "New Distribution
+    Capability", "AirShopping" and "OrderCreate" returns zero results. Any
+    classifier keying on the string "NDC" will get this wrong.
+
+versioning:
+  scheme: platform-release (Navitaire New Skies NSK x.y.z)
+  header: null
+  current: NSK 4.6
+  observed_history: NSK 3.3 → 3.4.6 → 3.4.8 → 4.1.1 → 4.5.1 → 4.6
+  detail: lifecycle/jetstar-lifecycle.yml
+
+entries:
+  - date: '2026-06-30'
+    category: Route Updates
+    type: commercial
+    title: Jetstar Route Discontinuation Notice — MCY–AKL and CNS–CHC services ending October 2026
+    url: https://apiblog.jetstar.com/
+  - date: '2026-06-10'
+    category: NDC
+    type: commercial
+    title: 'Route Launch: WSI–BNE | WSI–MEL | WSI–OOL'
+  - date: '2026-03-03'
+    category: Route Updates
+    type: commercial
+    title: Route Launch — PER–CHC | CHC–PER
+  - date: '2025-11-11'
+    category: Route Updates
+    type: commercial
+    title: Route Launch — AVV–DPS | AVV–ADL
+  - date: '2025-07-31'
+    category: Route Updates
+    type: breaking
+    title: Jetstar Asia (3K) Service Discontinuation Update for API Partners
+    highlights:
+      - Jetstar Asia (3K) flew its last service on 31 July 2025; JQ and GK unaffected.
+      - apisupport@jetstar.com named as the partner technical contact.
+    url: https://apiblog.jetstar.com/jetstar-asia-3k-service-discontinuation-update-for-api-partners/
+  - date: '2025-05-12'
+    category: Scheduled Maintenance
+    type: platform
+    title: Scheduled Maintenance — Navitaire load-balancer OS patch, 13 May 2025 02:00 AEST
+    highlights:
+      - OS patch to Navitaire load balancers to address vulnerabilities.
+  - date: '2025-04-10'
+    category: Outages
+    type: incident
+    severity: P3
+    title: Incident — New Skies TEST1 environment down (INC2803707)
+    highlights:
+      - Partners unable to connect to the NewSkies TEST1 environment.
+  - date: '2024-12-10'
+    category: Scheduled Maintenance
+    type: platform
+    title: Scheduled Maintenance — Navitaire OS patch, 11/12 December 2024
+    highlights:
+      - Under 10 minutes of downtime for NewSkies core applications including airports and ancillary services.
+  - date: '2024-11-13'
+    category: Scheduled Maintenance
+    type: platform
+    title: Scheduled Maintenance — software version update for Inet firewalls (CHG0578406)
+  - date: '2024-10-10'
+    category: Scheduled Maintenance
+    type: platform
+    title: 'COMPLETED: New Skies TEST2 cloud connectivity migration'
+    highlights:
+      - Jetstar network-to-Navitaire connectivity moved off legacy links.
+  - date: '2023-05-09'
+    category: Scheduled Maintenance
+    type: platform
+    title: Minor New Skies production upgrade 4.5.1 UPD9 (CHG0539117)
+    highlights:
+      - No PROD outage; possible ~1 minute interruption during service restart.
+  - date: '2023-02-15'
+    category: NDC
+    type: commercial
+    title: Zoned Seat Pricing — full rollout (JQ)
+  - date: '2023-01-24'
+    category: NDC
+    type: breaking
+    title: Jetstar Bundles Changes — introduction of Service Bundles
+  - date: '2023-01-11'
+    category: Scheduled Maintenance
+    type: platform
+    title: Scheduled API cloud migration outage — PROD, 31 January 2023
+  - date: '2022-09-19'
+    category: NDC
+    type: fix
+    title: GetAvailability bug fix in 4.5.1
+  - date: '2022-09-14'
+    category: Outages
+    type: incident
+    severity: P2
+    title: Incident — New Skies API is down (INC1966717)
+    highlights:
+      - All systems interfacing with New Skies via the API lost access to New Skies data.
+  - date: '2022-07-27'
+    category: NDC
+    type: platform
+    title: 'NSK 4.5.1 upgrade: follow up'
+  - date: '2021-10-05'
+    category: NDC
+    type: platform
+    title: SOAP API cloud migration in PROD, 6 October 2021
+  - date: '2021-06-29'
+    category: NDC
+    type: platform
+    title: DotRez API upgrade in production, 30 June 2021
+  - date: '2018-12-10'
+    category: NDC
+    type: breaking
+    title: Flexibiz bundle renamed to Flex
+    note: Carrier-specific fare-family rename that changes values partners parse.
+
+historical_milestones:
+  - date: '2009-02-07'
+    title: Jetstar cut over from Open Skies to Navitaire New Skies 3.0
+    note: Jetstar was Navitaire's first New Skies 3.0 customer.
+    source: https://files.jetstar.com/api/public/content/2009-jetstar-new-reservation-system-live
+  - date: '2013-09-15'
+    title: New Skies 3.4.6 scheduled upgrade completed (test URL changes)
+  - date: '2017-10-05'
+    title: 4.1.1 upgrade issues / differences
+
+related:
+  lifecycle: lifecycle/jetstar-lifecycle.yml
+  conventions: conventions/jetstar-conventions.yml
