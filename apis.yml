@@ -21,6 +21,17 @@ description: Jetstar Airways Pty Limited (ABN 33 069 720 243) is the Melbourne-b
   booking facilities for Registered Agents — API, GDS and Jetstar Agent Hub — and
   state that Registered Agents may only access Jetstar Data and make bookings via the
   API for all online distribution.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: enterprise
   onboarding: approval
