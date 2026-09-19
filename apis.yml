@@ -50,6 +50,17 @@ tags:
 - Travel
 - Australia
 - Aviation
+- Airlines
+- Low Cost Carrier
+- Distribution
+- Booking
+- GDS
+- Corporate Travel
+- Qantas Group
+tags_raw:
+- Travel
+- Australia
+- Aviation
 - Airline
 - Low Cost Carrier
 - Distribution
@@ -80,6 +91,15 @@ apis:
   humanURL: https://apiblog.jetstar.com/
   baseURL: https://jqapi.navitaire.com
   tags:
+  - Airlines
+  - Distribution
+  - Booking
+  - SOAP
+  - Navitaire
+  - New Skies
+  - Travel Agents
+  - Ancillaries
+  tags_raw:
   - Airline
   - Distribution
   - Booking
