@@ -1,4 +1,4 @@
-# Jetstar (jetstar)
+# Jetstar
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,96 +64,95 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Jetstar Airways Pty Limited (ABN 33 069 720 243) is the Melbourne-based low-cost carrier of the Qantas Group and, with Virgin Australia, one half of the Australian domestic duopoly. The Jetstar Group flies as Jetstar Airways (JQ) and Jetstar Japan (GK); Jetstar Asia (3K) flew its last service on 31 July 2025. Jetstar sits at the direct-distribution end of the Australian travel chain: it sells through jetstar.com, through the Jetstar Agent Hub, through seven GDSs, and through a partner channel it calls, literally, the Jetstar API. That API is not a public developer product and it is not IATA NDC — it is the Navitaire New Skies SOAP web service (NSK 4.6) hosted on the vendor's own domain at jqapi.navitaire.com, with documentation, registration and downloads behind a login at apiblog.jetstar.com. There is no public developer portal, no OpenAPI or WSDL published, no self-serve signup and no bulk export operation.
+Jetstar Airways Pty Limited (ABN 33 069 720 243) is the Melbourne-based low-cost carrier of the Qantas Group and, with Virgin Australia, one half of the Australian domestic duopoly. The Jetstar Group flies as Jetstar Airways (JQ) and Jetstar Japan (GK); Jetstar Asia (3K) flew its last service on 31 July 2025. Jetstar sits at the direct-distribution end of the Australian travel chain — it sells through jetstar.com, through the Jetstar Agent Hub, through seven GDSs, and through a partner channel it calls, literally, the Jetstar API. That API is not a public developer product and it is not IATA NDC — it is the Navitaire New Skies SOAP web service (NSK 4.6) hosted on the vendor's own domain at jqapi.navitaire.com, with documentation, registration and downloads behind a login at apiblog.jetstar.com. There is no public developer portal, no OpenAPI or WSDL published, no self-serve signup and no bulk export operation. Access requires GoStandard or GoGlobal IATA accreditation for BSP settlement plus separate Jetstar approval, Registered Agent status under Jetstar's Travel Agent Terms and Conditions, a client certificate and IP allow-listing. Jetstar's own trade communications name only three authorised booking facilities for Registered Agents — API, GDS and Jetstar Agent Hub — and state that Registered Agents may only access Jetstar Data and make bookings via the API for all online distribution.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/jetstar/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/jetstar/refs/heads/main/apis.yml)
+**Areas:** Travel · Australia · Aviation · Airlines · Low Cost Carrier · Distribution · Booking · GDS · Corporate Travel · Qantas Group
 
-## Tags
+## Jetstar on APIs.io
 
-- Travel
-- Australia
-- Aviation
-- Airline
-- Low Cost Carrier
-- Distribution
-- Booking
-- GDS
-- Corporate Travel
-- Qantas Group
+Everything profiled for Jetstar is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/jetstar/](https://apis.io/providers/jetstar/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (1)
 
-- **Created:** 2026-07-28
-- **Modified:** 2026-07-28
+- [Jetstar API](https://apis.io/apis/jetstar/jetstar-api/) — The Jetstar API is Jetstar's direct-connect distribution channel for Registered Travel Agents and partners. It is a Navitaire New Skies (NSK) SOAP / WCF web…
 
-## APIs
+### Published properties
 
-### Jetstar API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-The Jetstar API is Jetstar's direct-connect distribution channel for Registered Travel Agents and partners. It is a Navitaire New Skies (NSK) SOAP / WCF web service, not a REST product and not IATA NDC. Jetstar's own partner FAQ publishes the environments as NSK 4.6 with production at `https://jqapi.navitaire.com` and test at `https://soapapir4y.test.jq.navitaire.com`, and documents WCF services such as `UtilitiesManager.svc` alongside session-signature authentication. Operations named in Jetstar's published partner documentation include `GetAvailability`, `GetTripAvailabilityWithSSR`, `PriceItinerary`, `GetItineraryPrice`, `GetSSRAvailability`, `GetStationList`, `AddPaymentToBooking`, `BookingCommit`, `GetBooking` and `UpdatePassengers`. Documentation, registration, an API Products page and a Download Centre live at apiblog.jetstar.com behind a partner login; no OpenAPI, WSDL or machine-readable contract is published publicly.
+#### Security (3)
 
-- **Human URL:** [https://apiblog.jetstar.com/](https://apiblog.jetstar.com/)
-- **Base URL:** `https://jqapi.navitaire.com`
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Tags
+- [Jetstar Authentication](https://apis.io/security/jetstar/jetstar-authentication/)
+- [Jetstar Domain Security](https://apis.io/security/jetstar/jetstar-domain-security/)
+- [Jetstar Vulnerability Disclosure](https://apis.io/security/jetstar/jetstar-vulnerability-disclosure/)
 
-- Airline
-- Distribution
-- Booking
-- SOAP
-- Navitaire
-- New Skies
-- Travel Agents
-- Ancillaries
+## Where to find this API
 
-#### Properties
-
-- [Portal](https://apiblog.jetstar.com/)
-- [Documentation](https://apiblog.jetstar.com/api-documentation/)
-- [FAQ](https://apiblog.jetstar.com/faq/)
-- [Signup](https://apiblog.jetstar.com/api-registration/)
-- [Documentation](https://apiblog.jetstar.com/api-products/)
-- [Downloads](https://apiblog.jetstar.com/downloads/)
-- [Blog](https://apiblog.jetstar.com/blog/)
-- [Authentication](https://apiblog.jetstar.com/login/)
-- [Support](mailto:apisupport@jetstar.com)
-- [Terms Of Service](https://www.jetstar.com/us/en/travel-agents/terms-and-conditions)
-
-## Common Properties
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.jetstar.com/)
-- [Portal](https://apiblog.jetstar.com/)
 - [Documentation](https://www.jetstar.com/us/en/travel-agents/information-centre/jetstar-api)
-- [Getting Started](https://www.jetstar.com/us/en/travel-agents/why-become-a-registered-travel-agent-with-jetstar)
-- [Signup](https://www.jetstar.com/us/en/travel-agents)
-- [Terms Of Service](https://www.jetstar.com/us/en/travel-agents/terms-and-conditions)
-- [Privacy](https://www.jetstar.com/au/en/privacy-policy)
-- [Support](mailto:apisupport@jetstar.com)
-- [Support](mailto:sales@jetstar.com)
-- [Documentation](https://www.jetstar.com/us/en/travel-agents/information-centre/bsp-settlement)
-- [Documentation](https://www.jetstar.com/us/en/travel-agents/bsp-payment-changes)
-- [Documentation](https://www.jetstar.com/au/en/travel-agents/remuneration)
-- [FAQ](https://www.jetstar.com/_/media/files/qantas-group/qantas-group-081-faqs.pdf)
-- [GitHub Organization](https://github.com/JetstarAirways)
-- [LinkedIn](https://www.linkedin.com/company/jetstar-airways)
+- [Getting started](https://www.jetstar.com/us/en/travel-agents/why-become-a-registered-travel-agent-with-jetstar)
+- [API reference](https://apiblog.jetstar.com/api-documentation/)
+- [Sign up](https://www.jetstar.com/us/en/travel-agents)
 - [Blog](https://newsroom.jetstar.com/)
+- [Security](https://www.qantas.com/.well-known/security.txt)
+- [Terms of service](https://www.jetstar.com/us/en/travel-agents/terms-and-conditions)
+- [Privacy policy](https://www.jetstar.com/au/en/privacy-policy)
+- [GitHub](https://github.com/JetstarAirways)
+- [Status](https://apiblog.jetstar.com/category/outages/)
 
-## Switching Cost
+## API Evangelist rating
 
-Full evidence is recorded in [review.yml](review.yml). Summary:
+**Kin Score 22.8** — emerging · rubric 0.24.0 · scored 2026-10-17
 
-| Dimension | Finding |
-| --- | --- |
-| Interface shape | `proprietary-documented` — Navitaire New Skies (NSK 4.6) SOAP/WCF, vendor-defined, no standard reference found |
-| Second source | `no-alternative` for Jetstar's own seat inventory |
-| Exit path | `export-on-request` — no bulk export operation published; per-PNR retrieval only |
-| Identifier portability | IATA designators JQ/GK, PNR record locators, IATA station codes, IATA agency number, QF 081 ticket stock, IATA SSR + Reg 830d fields; Navitaire session signatures and product/fare-basis codes are not portable |
-| Contractual lock-in | Three authorised booking facilities only (API, GDS, Agent Hub); booking on Jetstar.com for commercial purposes breaches the Travel Agent T&Cs |
-| Distribution model | `gds-intermediated` in the enum, but in practice a hybrid: direct Navitaire API plus a partial GDS overlay with incomplete fare content |
-| NDC posture | No IATA NDC. No NDC endpoint, no NDC message vocabulary, no certification claim found |
-| Access gate | `accredited-or-licensed` — GoStandard/GoGlobal IATA accreditation plus separate Jetstar approval |
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 0.0 |
+| Contract governance | 4.5 |
+| Operational transparency | 44.7 |
+| Developer ergonomics | 23.8 |
+| Access clarity | 23.7 |
 
-## Maintainers
+**Agent readiness 2.5** — human-only
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 22.5** — Telecommunications
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/jetstar/](https://apis.io/providers/jetstar/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Jetstar: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/jetstar/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
